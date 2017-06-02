@@ -1,9 +1,8 @@
-package com.zekeoptimo.swagger2confluence
+package com.zekeoptimo.swagger2confluence.parser
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.zekeoptimo.swagger2confluence.closures.DefaultClosures
 import com.zekeoptimo.swagger2confluence.markup.MarkupInterface
-import com.zekeoptimo.swagger2confluence.parser.SwaggerParser
 import groovyx.net.http.ContentType
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
@@ -20,9 +19,9 @@ import java.time.temporal.ChronoUnit
  *
  * @author zekeo
  */
-class SwaggerParseEngine {
+class SwaggerParserEngine {
 
-    private static final Logger logger = LoggerFactory.getLogger(SwaggerParseEngine.class)
+    private static final Logger logger = LoggerFactory.getLogger(SwaggerParserEngine.class)
 
     private final Object data
 
@@ -31,7 +30,7 @@ class SwaggerParseEngine {
      *
      * @param data Swagger data
      */
-    SwaggerParseEngine(Swagger data) {
+    SwaggerParserEngine(Swagger data) {
         this.data = data
     }
 
@@ -41,7 +40,7 @@ class SwaggerParseEngine {
      * @param jsonString String
      * @throws IOException Exception
      */
-    SwaggerParseEngine(String jsonString) throws IOException {
+    SwaggerParserEngine(String jsonString) throws IOException {
         ObjectMapper mapper = new ObjectMapper()
         this.data = mapper.readValue(jsonString, Swagger.class)
     }
@@ -52,7 +51,7 @@ class SwaggerParseEngine {
      * @param jsonFile File
      * @throws IOException Exception
      */
-    SwaggerParseEngine(File jsonFile) throws IOException {
+    SwaggerParserEngine(File jsonFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper()
         //this.data = mapper.readValue(jsonFile, Swagger.class)
         this.data = mapper.readValue(jsonFile, Object.class)
@@ -64,7 +63,7 @@ class SwaggerParseEngine {
      * @param jsonUrl URL
      * @throws IOException Exception
      */
-    SwaggerParseEngine(URL jsonUrl) throws IOException {
+    SwaggerParserEngine(URL jsonUrl) throws IOException {
         ObjectMapper mapper = new ObjectMapper()
         this.data = mapper.readValue(jsonUrl, Swagger.class)
     }

@@ -1,4 +1,4 @@
-import com.zekeoptimo.swagger2confluence.SwaggerParseEngine
+import com.zekeoptimo.swagger2confluence.parser.SwaggerParserEngine
 import com.zekeoptimo.swagger2confluence.markup.impl.ConfluenceApi
 
 /**
@@ -9,7 +9,7 @@ def markupInterface = new ConfluenceApi()
 def template = new File("../templates/basic-template.html")
 def swaggerFile = new File("../json/petstoreswagger.json")
 
-def a = new SwaggerParseEngine(swaggerFile)
+def a = new SwaggerParserEngine(swaggerFile)
 def result = a.parse(markupInterface, template)
 
 println result
