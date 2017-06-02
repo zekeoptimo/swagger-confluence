@@ -1,5 +1,13 @@
 # swagger-confluence
-Tools for exporting Swagger to Confluence
+
+Tool for exporting Swagger to Confluence.
+
+Current options:
+
+- Use a template to covert Swagger into the desired format
+- Programmatically write the conversion specifications
+- Upload results to Confluence API
+- Basic XHTML template for Confluence API provided
 
 
 ## Compiling
@@ -8,4 +16,4 @@ Tools for exporting Swagger to Confluence
 
 ## Usage
 
-See Example.groovy script
+See TemplateExample.groovy for an example
