@@ -1,5 +1,5 @@
-import com.zekeoptimo.swagger2confluence.parser.SwaggerParserEngine
-import com.zekeoptimo.swagger2confluence.markup.impl.ConfluenceApi
+import SwaggerParserEngine
+import ConfluenceApi
 
 /**
  * Example groovy script to parse the pet store swagger json file from swagger.io

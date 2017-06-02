@@ -1,0 +1,27 @@
+group 'com.zekeoptimo'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.11',
+            'com.fasterxml.jackson.core:jackson-databind:2.8.8.1',
+            'org.slf4j:slf4j-api:1.7.25',
+            'org.slf4j:slf4j-simple:1.7.25',
+            'org.codehaus.groovy.modules.http-builder:http-builder:0.7'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
