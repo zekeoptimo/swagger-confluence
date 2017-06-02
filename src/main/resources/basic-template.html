@@ -1,0 +1,68 @@
+<div style="min-width: 600px; max-width: 1050px;">
+    <h1>${info.title}</h1>
+    <pre>[ Base URL: ${host}${basePath}]</pre>
+    <blockquote>
+        <p>${info.description}</p>
+    </blockquote>
+    <p>
+        Version: ${info.version}<br/>
+        Contact: <a href="mailto:${info.contact?.email}">${info.contact?.email}</a><br/>
+        Terms of Service: <a href="${info.termsOfService}">${info.termsOfService}</a><br/>
+    </p>
+    <hr />
+
+    <h2>Table of Contents</h2>
+    <p>
+        %Traverse(tags, name)%
+        <a href="#${name}-tag">${name} - ${description}</a><br/>
+        %EndTraverse%
+        <ac:link ac:anchor="Definitions"><ac:plain-text-link-body><![CDATA[Definitions]]></ac:plain-text-link-body></ac:link><br/>
+    </p>
+
+    <h2>API Endpoints</h2>
+    %Traverse(tags, name)%
+    <div style="padding-top: 10px;">
+        <a name="${name}-tag" style="cursor: pointer;"><h3><span style="font-size: 18px;">${name}</span> <span style="font-size: 14px; color: #707070;">${description}</span></h3></a>
+        %Traverse(c:T_TAG_PATHS, key)%
+        %Traverse(values, key)%
+        <div style="padding: 10px 0 10px 20px;">
+            <p>
+                <span style="color: #fff; text-transform: uppercase; display: inline-block; cursor: pointer; text-align: center;
+                        font-size: 14px; font-weight: 700; width: 60px; padding: 6px 15px; border-radius: 3px; text-shadow: 0 1px 0 rgba(0,0,0,.1);
+                        background: $*{key == 'get' ? "#61affe" : key == 'post' ? "#49cc90" : key == 'put' ? "#fca130" : "#f93e3e"}; ">
+                    ${key}
+                </span>
+                <span style="padding: 6px 5px; font-family: Source Code Pro,monospace; font-weight: 600">${parent.key}</span>
+                <span style="font-size: 13px; color: #707070;">${summary}</span>
+            </p>
+            <h4>Parameters</h4>
+            <table style="width: 100%">
+                <tr><th>Type</th><th>Name</th><th>Description</th><th>Required</th><th>Schema</th><th>Default</th></tr>
+                %Traverse(parameters)%
+                <tr><td>${in}</td><td>${name}</td><td>${description}</td><td>${required}</td><td>${me.parseType()}</td><td>${default}</td></tr>
+                %EndTraverse%
+            </table>
+            <h4>Responses</h4>
+            <table style="width: 100%">
+                <tr><th>HTTP Code</th><th>Description</th><th>Type</th></tr>
+                %Traverse(responses)%
+                <tr><td>${key}</td><td>${description}</td><td>${me.parseType()}</td></tr>
+                %EndTraverse%
+            </table>
+        </div>
+        %EndTraverse%
+        %EndTraverse%
+    </div>
+    %EndTraverse%
+
+    <h2>Definitions</h2>
+    %Traverse(definitions, key)%
+    <h3>${key}</h3>
+    <table style="width: 100%">
+        <tr><th>Name</th><th></th>Description<th>Type</th></tr>
+        %Traverse(properties)%
+        <tr><td>${key}</td><td>${description}</td><td>${me.parseType()}</td></tr>
+        %EndTraverse%
+    </table>
+    %EndTraverse%
+</div>
