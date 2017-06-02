@@ -10,7 +10,7 @@ class DefaultClosures {
      * Closure that finds paths and operations for a specific tag. This allows you to traverse the paths/operations
      * and have them grouped by their tag.
      */
-    public final static Closure T_TAG_PATHS = {
+    private final static Closure T_TAG_PATHS = {
         String tag = it.values.name
         def paths = [:]
 
@@ -25,5 +25,9 @@ class DefaultClosures {
         }
 
         return paths
+    }
+
+    static Map<String, Closure> getClosures() {
+        return ["T_TAG_PATHS" : T_TAG_PATHS]
     }
 }

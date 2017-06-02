@@ -1,4 +1,4 @@
-package com.zekeoptimo.swagger2confluence.parser;
+package com.zekeoptimo.swagger2confluence.parser
 
 import com.zekeoptimo.swagger2confluence.markup.MarkupInterface
 import com.zekeoptimo.swagger2confluence.model.ParseLine
@@ -89,18 +89,18 @@ class SwaggerParser {
                             try {
                                 def template = engine.createTemplate(item)
                                 def result = template.make(bindings)
-                                if (result != null) output += result.toString()
+                                if (result != null) output += markupInterface.line(result.toString())
                             } catch (MissingPropertyException e) {
                                 logger.error("Missing property: " + e.getProperty() + ", Unable to parse line: " + item)
                             } catch (Exception e) {
                                 logger.error("Exception: " + e.getMessage() + ", Unable to parse line: " + item)
                             }
                         } else {
-                            if (item) output += item
+                            if (item) output += markupInterface.line(item)
                         }
                     } else if (item instanceof Closure) {
                         def result = item.call(bindings)
-                        if (result != null) output += result.toString()
+                        if (result != null) output += markupInterface.line(result.toString())
                     }
                 }
             }

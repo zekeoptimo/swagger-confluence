@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory
 /**
  * Confluence API interface
  */
-class ConfluenceApi implements MarkupInterface {
+class ConfluenceApiMarkup implements MarkupInterface {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConfluenceApi.class)
+    private static final Logger logger = LoggerFactory.getLogger(ConfluenceApiMarkup.class)
 
-    ConfluenceApi() {
+    ConfluenceApiMarkup() {
         // Register escape
         Object.metaClass.escape = { -> escape(delegate) }
         Object.metaClass.parseType = { -> parseType(delegate) }

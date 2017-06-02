@@ -1,13 +1,12 @@
 package com.zekeoptimo.swagger2confluence.parser
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.zekeoptimo.swagger2confluence.closures.DefaultClosures
 import com.zekeoptimo.swagger2confluence.markup.MarkupInterface
+import groovy.json.JsonSlurper
 import groovyx.net.http.ContentType
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
 
-import com.zekeoptimo.swagger2confluence.model.swagger.Swagger
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -23,16 +22,8 @@ class SwaggerParserEngine {
 
     private static final Logger logger = LoggerFactory.getLogger(SwaggerParserEngine.class)
 
-    private final Object data
-
-    /**
-     * Load from a Swagger object
-     *
-     * @param data Swagger data
-     */
-    SwaggerParserEngine(Swagger data) {
-        this.data = data
-    }
+    private Object data
+    private Map<String, Closure> closures = DefaultClosures.getClosures()
 
     /**
      * Load from a string
@@ -41,8 +32,8 @@ class SwaggerParserEngine {
      * @throws IOException Exception
      */
     SwaggerParserEngine(String jsonString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper()
-        this.data = mapper.readValue(jsonString, Swagger.class)
+        def slurper = new JsonSlurper()
+        this.data = slurper.parseText(jsonString)
     }
 
     /**
@@ -52,9 +43,8 @@ class SwaggerParserEngine {
      * @throws IOException Exception
      */
     SwaggerParserEngine(File jsonFile) throws IOException {
-        ObjectMapper mapper = new ObjectMapper()
-        //this.data = mapper.readValue(jsonFile, Swagger.class)
-        this.data = mapper.readValue(jsonFile, Object.class)
+        def slurper = new JsonSlurper()
+        this.data = slurper.parse(jsonFile)
     }
 
     /**
@@ -64,17 +54,35 @@ class SwaggerParserEngine {
      * @throws IOException Exception
      */
     SwaggerParserEngine(URL jsonUrl) throws IOException {
-        ObjectMapper mapper = new ObjectMapper()
-        this.data = mapper.readValue(jsonUrl, Swagger.class)
+        def slurper = new JsonSlurper()
+        this.data = slurper.parse(jsonUrl)
+    }
+
+    /**
+     * Add to available list of closures
+     *
+     * @param closures
+     */
+    void addClosures(Map<String, Closure> closures) {
+        this.closures << closures
+    }
+
+    String parse(MarkupInterface markupInterface, String template) {
+        return parse(markupInterface, (Serializable) template.split("\n"))
+    }
+
+    String parse(MarkupInterface markupInterface, File template) {
+        return parse(markupInterface, (Serializable) template)
     }
 
     /**
      * Parse the loaded schema using the supplied parser spec
      *
      * @param swaggerParser Swagger Parser spec
+     * @param template Template
      * @return Results
      */
-    String parse(MarkupInterface markupInterface, File template) {
+    String parse(MarkupInterface markupInterface, Serializable template) {
         def parser = new SwaggerParser(markupInterface)
         def current = parser
         def traverseLevel = 0
@@ -95,9 +103,9 @@ class SwaggerParserEngine {
                     // Determine / derive closures to use
                     Closure dataClosure
                     if (path[0..1] == "c:") {
-                        def c = DefaultClosures.getField(path.substring(2))?.get(null)
+                        def c = closures[path.substring(2)]
                         if (!(c && c instanceof Closure))
-                            throw new Exception("Closure " + path.substring(2) + " not found!")
+                            throw new Exception("Closure " + path.substring(2) + " not found")
                         dataClosure = c
                     } else {
                         dataClosure = {
@@ -184,7 +192,7 @@ class SwaggerParserEngine {
      *
      * @return Swagger data
      */
-    Swagger getData() {
+    Object getData() {
         return data
     }
 
