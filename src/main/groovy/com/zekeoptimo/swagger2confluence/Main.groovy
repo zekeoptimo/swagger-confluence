@@ -8,7 +8,7 @@ class Main {
     static void main(String... args) {
         def markupInterface, template, source, confluenceUser, confluencePassword, conflueceApiUrl, pageId
 
-        def cli = new CliBuilder(usage: 'swagger2confluence [-h] [-mt] [-mc] [-t template] [-f swagger file | -u swagger url] [-o output file] [-cuser confluence user] [-cpwd confluence password] [-curl confluence api url] [-cpage confluence page id]')
+        def cli = new CliBuilder(usage: 'swagger-confluence [-h] [-mt] [-mc] [-t template] [-f swagger file | -u swagger url] [-o output file] [-cuser confluence user] [-cpwd confluence password] [-curl confluence api url] [-cpage confluence page id]')
 
         cli.with {
             h longOpt: 'help', 'Show usage information'
