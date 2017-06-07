@@ -1,15 +1,21 @@
 group 'com.zekeoptimo'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'groovy'
-apply plugin: 'java'
-
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'Confluence to Swagger',
-                'Implementation-Version': version
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.0'
     }
 }
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "com.zekeoptimo.swagger2confluence.Main"
 
 repositories {
     mavenCentral()
@@ -17,9 +23,17 @@ repositories {
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.11',
-            //'com.fasterxml.jackson.core:jackson-databind:2.8.8.1',
             'org.slf4j:slf4j-api:1.7.25',
             'org.slf4j:slf4j-simple:1.7.25',
-            'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
+            'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1',
+            'commons-cli:commons-cli:1.4'
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
+
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Confluence to Swagger',
+                'Implementation-Version': version
+    }
 }

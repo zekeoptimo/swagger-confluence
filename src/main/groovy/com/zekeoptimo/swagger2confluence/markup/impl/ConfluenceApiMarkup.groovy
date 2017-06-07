@@ -18,7 +18,7 @@ class ConfluenceApiMarkup implements MarkupInterface {
     }
 
     String line(String text) {
-        return text
+        return text != null ? text.trim() : ""
     }
 
     String preProcessing(String text) {
